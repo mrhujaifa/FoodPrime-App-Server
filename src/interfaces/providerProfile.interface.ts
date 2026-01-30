@@ -1,4 +1,5 @@
 import { Decimal } from "@prisma/client/runtime/index-browser";
+import { CuisineType } from "../../generated/prisma/enums";
 
 export interface IProviderProfile {
   id: string;
@@ -10,9 +11,9 @@ export interface IProviderProfile {
   coverUrl?: string | null;
   isOpen: boolean;
   isVerified: boolean;
-  rating: number;
+  rating?: number;
   totalReviews: number;
-  cuisineType?: string | null;
+  cuisineType?: CuisineType;
   deliveryFee: Decimal | number;
   estimatedDeliveryTime?: string | null;
   createdAt: Date;

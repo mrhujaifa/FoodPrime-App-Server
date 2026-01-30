@@ -16,4 +16,10 @@ router.get(
   providerController.getAllProviderMeals,
 );
 
+router.post(
+  "/become-a-partner",
+  auth(UserRole.CUSTOMER),
+  providerController.createProviderProfile,
+);
+
 export const providerRouter = router;

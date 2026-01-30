@@ -4,8 +4,13 @@ import { providerService } from "./provider.service";
 const createProviderMeal = async (req: Request, res: Response) => {
   try {
     console.log("CONTROLLER CHECK:", req.body);
-    const result = await providerService.createProviderMeal(req.body);
-    res.status(201).json(result);
+    const userId = (req as any).user?.id;
+    const result = await providerService.createProviderMeal(req.body, userId);
+    res.status(201).json({
+      success: true,
+      message: "Meal created successfully",
+      data: result,
+    });
   } catch (e: any) {
     res.status(400).json({
       error: "meals creation failed",
@@ -26,7 +31,26 @@ const getAllProviderMeals = async (req: Request, res: Response) => {
   }
 };
 
+const createProviderProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+
+    const result = await providerService.createProviderProfile(
+      req.body,
+      userId,
+    );
+    res.status(200).json({
+      success: true,
+      message: "Provider Profile create successfull",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const providerController = {
   createProviderMeal,
   getAllProviderMeals,
+  createProviderProfile,
 };

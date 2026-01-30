@@ -1,3 +1,4 @@
+import { ICreateProviderProfile } from "../interfaces/providerProfile.interface";
 import { prisma } from "../lib/prisma";
 
 const adminSeed = async () => {
@@ -16,7 +17,7 @@ const adminSeed = async () => {
       estimatedDeliveryTime: "30-45 mins",
     };
     const result = await prisma.providerProfile.create({
-      data: categoryData,
+      data: categoryData as ICreateProviderProfile,
     });
     return result;
   } catch (error) {

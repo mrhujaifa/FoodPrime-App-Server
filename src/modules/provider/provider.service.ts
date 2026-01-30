@@ -1,8 +1,9 @@
 import { Prisma } from "../../../generated/prisma/client";
 import { ICreateMeal } from "../../interfaces/meal.interface";
+import { ICreateProviderProfile } from "../../interfaces/providerProfile.interface";
 import { prisma } from "../../lib/prisma";
 
-const createProviderMeal = async (payload: ICreateMeal) => {
+const createProviderMeal = async (payload: ICreateMeal, userId: string) => {
   const {
     name,
     description,
@@ -20,7 +21,7 @@ const createProviderMeal = async (payload: ICreateMeal) => {
   } = payload;
 
   const providerExists = await prisma.providerProfile.findUnique({
-    where: { id: providerId },
+    where: { userId: userId },
   });
 
   if (!providerExists) {
@@ -47,7 +48,7 @@ const createProviderMeal = async (payload: ICreateMeal) => {
       prepTime,
       calories,
       categoryId,
-      providerId,
+      providerId: providerExists.id,
       // Decimal conversion
       price: new Prisma.Decimal(price as number),
       discountPrice: discountPrice
@@ -68,7 +69,42 @@ const getAllProviderMeals = async (providerId: string) => {
   return result;
 };
 
+const createProviderProfile = async (
+  payload: ICreateProviderProfile,
+  userId: string,
+) => {
+  const isProfileExist = await prisma.providerProfile.findUnique({
+    where: { userId },
+  });
+
+  if (isProfileExist) {
+    throw new Error("This user already has a provider profile!");
+  }
+
+  const result = await prisma.providerProfile.create({
+    data: {
+      businessName: payload.businessName,
+      description: payload.description,
+      address: payload.address,
+      cuisineType: payload.cuisineType,
+      deliveryFee: payload.deliveryFee,
+      estimatedDeliveryTime: payload.estimatedDeliveryTime,
+      logoUrl: payload.logoUrl,
+      coverUrl: payload.coverUrl,
+      // User relation connect kora hosse
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
 export const providerService = {
   createProviderMeal,
   getAllProviderMeals,
+  createProviderProfile,
 };

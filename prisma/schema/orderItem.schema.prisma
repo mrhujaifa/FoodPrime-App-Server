@@ -1,11 +1,11 @@
 model OrderItem {
-  id      String @id @default(uuid())
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  id      String @id @default(uuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-  mealId String
-  meal   Meal   @relation(fields: [mealId], references: [id])
+  mealId String
+  meal   Meal   @relation(fields: [mealId], references: [id])
 
-  quantity Int
-  price    Decimal @db.Decimal(10, 2)
+  quantity Int
+  price    Decimal @db.Decimal(10, 2)
 }
