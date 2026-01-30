@@ -1,0 +1,6 @@
+model Category {
+  id    String @id @default(ulid())
+  name  String @unique
+  image String?
+  meals Meal[]
+}

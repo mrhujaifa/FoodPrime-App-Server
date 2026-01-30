@@ -1,0 +1,22 @@
+model ProviderProfile {
+  id                    String  @id @default(uuid())
+  userId                String  @unique
+  businessName          String
+  description           String?
+  address               String
+  logoUrl               String?
+  coverUrl              String?
+  isOpen                Boolean @default(true)
+  isVerified            Boolean @default(false)
+  rating                Float   @default(0.0)
+  totalReviews          Int     @default(0)
+  cuisineType           String?
+  deliveryFee           Decimal @default(0.00) @db.Decimal(10, 2)
+  estimatedDeliveryTime String?
+
+  user  User   @relation(fields: [userId], references: [id]) // user relation
+  meals Meal[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

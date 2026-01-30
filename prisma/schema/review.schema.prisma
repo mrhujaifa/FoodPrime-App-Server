@@ -1,0 +1,19 @@
+model Review {
+  id         String   @id @default(uuid())
+  rating     Int      @default(5)
+  comment    String?  @db.Text
+  parentId   String?
+  customerId String
+  mealId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  parent   Review?  @relation("ReviewReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Review[] @relation("ReviewReplies")
+  customer User     @relation(fields: [customerId], references: [id])
+  meal     Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@index([mealId])
+  @@index([customerId])
+  @@index([parentId])
+}

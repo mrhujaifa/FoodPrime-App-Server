@@ -1,0 +1,40 @@
+model Order {
+  id               String        @id @default(uuid())
+  orderNumber      String        @unique
+  totalPrice       Decimal       @db.Decimal(10, 2)
+  deliveryAddress  String
+  phoneNumber      String
+  status           OrderStatus   @default(PLACED)
+  paymentMethod    PaymentType   @default(COD)
+  paymentStatus    PaymentStatus @default(PENDING)
+  estimatedArrival DateTime?
+  orderNotes       String?
+  customerId       String
+
+  customer User        @relation(fields: [customerId], references: [id])
+  items    OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PLACED
+  REJECTED
+  PREPARING
+  READY
+  ON_THE_WAY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentType {
+  COD
+  ONLINE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
