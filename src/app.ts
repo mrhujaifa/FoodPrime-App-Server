@@ -4,6 +4,7 @@ import { env } from "./lib/env";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import { providerRouter } from "./modules/provider/provider.router";
+import { mealRouter } from "./modules/meal/meal.router";
 
 const app: Application = express();
 
@@ -22,6 +23,9 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 
 //provider router
 app.use("/api/provider", providerRouter);
+
+// meal router
+app.use("/api/meals", mealRouter);
 
 // root router response
 app.get("/", (req, res) => {

@@ -60,11 +60,25 @@ const createProviderMeal = async (payload: ICreateMeal, userId: string) => {
   return result;
 };
 
-const getAllProviderMeals = async (providerId: string) => {
-  const result = await prisma.meal.findMany({
-    where: { providerId },
-    include: { category: true },
-    orderBy: { createdAt: "desc" },
+const getProviderFullProfile = async (providerId: string) => {
+  const result = await prisma.providerProfile.findUnique({
+    where: { id: providerId },
+    include: {
+      user: {
+        select: {
+          email: true,
+        },
+      },
+      meals: {
+        include: {
+          category: true,
+          rivew: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
   return result;
 };
@@ -103,8 +117,14 @@ const createProviderProfile = async (
   return result;
 };
 
+const getProviderParterShipRequest = async () => {
+  const result = await prisma.providerProfile.findMany();
+  return result;
+};
+
 export const providerService = {
   createProviderMeal,
-  getAllProviderMeals,
+  getProviderFullProfile,
   createProviderProfile,
+  getProviderParterShipRequest,
 };

@@ -7,19 +7,24 @@ const router = express.Router();
 
 router.post(
   "/meals",
-  auth(UserRole.PROVIDER),
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
   providerController.createProviderMeal,
 );
 router.get(
-  "/meals/:providerId",
-  auth(UserRole.PROVIDER),
-  providerController.getAllProviderMeals,
+  "/profile/:providerId",
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  providerController.getProviderFullProfile,
 );
 
 router.post(
   "/become-a-partner",
-  auth(UserRole.CUSTOMER),
+  auth(UserRole.CUSTOMER, UserRole.ADMIN),
   providerController.createProviderProfile,
+);
+router.get(
+  "/become-a-partner/request",
+  auth(UserRole.CUSTOMER, UserRole.ADMIN),
+  providerController.getProviderParterShipRequest,
 );
 
 export const providerRouter = router;

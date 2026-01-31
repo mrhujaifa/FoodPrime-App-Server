@@ -19,10 +19,10 @@ const createProviderMeal = async (req: Request, res: Response) => {
   }
 };
 
-const getAllProviderMeals = async (req: Request, res: Response) => {
+const getProviderFullProfile = async (req: Request, res: Response) => {
   try {
     const { providerId } = req.params;
-    const result = await providerService.getAllProviderMeals(
+    const result = await providerService.getProviderFullProfile(
       providerId as string,
     );
     res.status(200).json({ success: true, data: result });
@@ -49,8 +49,22 @@ const createProviderProfile = async (req: Request, res: Response) => {
   }
 };
 
+const getProviderParterShipRequest = async (req: Request, res: Response) => {
+  try {
+    const result = await providerService.getProviderParterShipRequest();
+    res.status(201).json({
+      success: true,
+      message: "Get Provider Partner Ship request fetch successfull",
+      data: result,
+    });
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 export const providerController = {
   createProviderMeal,
-  getAllProviderMeals,
+  getProviderFullProfile,
   createProviderProfile,
+  getProviderParterShipRequest,
 };
