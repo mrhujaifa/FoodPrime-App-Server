@@ -117,6 +117,8 @@ const createProviderProfile = async (
   return result;
 };
 
+// const getSingleProviderProfile
+
 const getProviderParterShipRequest = async () => {
   const result = await prisma.providerProfile.findMany();
   return result;

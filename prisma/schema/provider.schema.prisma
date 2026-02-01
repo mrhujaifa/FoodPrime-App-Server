@@ -2,13 +2,14 @@ model ProviderProfile {
   id                    String       @id @default(uuid())
   userId                String       @unique
   businessName          String
+  username              String?       @unique
   description           String?
   address               String
   logoUrl               String?
   coverUrl              String?
   isOpen                Boolean      @default(true)
   isVerified            Boolean      @default(false)
-  rating                Float?        @default(0.0)
+  rating                Float?       @default(0.0)
   totalReviews          Int          @default(0)
   cuisineType           CuisineType? @default(OTHERS)
   deliveryFee           Decimal      @default(0.00) @db.Decimal(10, 2)

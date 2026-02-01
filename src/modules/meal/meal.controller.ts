@@ -14,6 +14,20 @@ const getAllMeals = async (req: Request, res: Response) => {
   }
 };
 
+const getMealsCategories = async (req: Request, res: Response) => {
+  try {
+    const result = await mealService.getMealCategories();
+    res.status(201).json({
+      message: "All categories are found!",
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 export const mealController = {
   getAllMeals,
+  getMealsCategories,
 };

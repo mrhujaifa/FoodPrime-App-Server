@@ -10,20 +10,16 @@ router.post(
   auth(UserRole.PROVIDER, UserRole.ADMIN),
   providerController.createProviderMeal,
 );
-router.get(
-  "/profile/:providerId",
-  auth(UserRole.PROVIDER, UserRole.ADMIN),
-  providerController.getProviderFullProfile,
-);
+router.get("/profile/:providerId", providerController.getProviderFullProfile);
 
 router.post(
   "/become-a-partner",
-  auth(UserRole.CUSTOMER, UserRole.ADMIN),
+  auth(UserRole.CUSTOMER, UserRole.ADMIN, UserRole.PROVIDER),
   providerController.createProviderProfile,
 );
 router.get(
   "/become-a-partner/request",
-  auth(UserRole.CUSTOMER, UserRole.ADMIN),
+  auth(UserRole.ADMIN),
   providerController.getProviderParterShipRequest,
 );
 
