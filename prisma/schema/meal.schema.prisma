@@ -16,6 +16,7 @@ model Meal {
   category   Category        @relation(fields: [categoryId], references: [id])
   orderItems OrderItem[]
   rivew      Review[]
+  cart     CartItem[]
   providerId String
   provider   ProviderProfile @relation(fields: [providerId], references: [id])
 

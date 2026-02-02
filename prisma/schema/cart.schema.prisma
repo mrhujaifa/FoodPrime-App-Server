@@ -1,0 +1,26 @@
+model Cart {
+  id         String     @id @default(uuid())
+  customerId String     @unique // Ekjon user-er ektai active cart thakbe
+  customer   User       @relation(fields: [customerId], references: [id])
+  items      CartItem[]
+  
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  
+  mealId    String
+  meal      Meal     @relation(fields: [mealId], references: [id])
+  
+  quantity  Int      @default(1)
+  // Ekhane price rakhar dorkar nai, karon cart shob shomoy current meal price dekhabe
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, mealId]) // Ek-i cart-e ek-i meal duibar thakbe na, quantity barhbe
+}

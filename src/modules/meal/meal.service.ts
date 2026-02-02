@@ -23,7 +23,6 @@ const getMealCategories = async () => {
   return result;
 };
 
-const addToCart = () => {};
 export const mealService = {
   getAllMeals,
   getMealCategories,

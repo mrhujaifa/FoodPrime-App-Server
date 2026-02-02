@@ -2,7 +2,7 @@ model ProviderProfile {
   id                    String       @id @default(uuid())
   userId                String       @unique
   businessName          String
-  username              String?       @unique
+  username String @default("temporary_user") 
   description           String?
   address               String
   logoUrl               String?
