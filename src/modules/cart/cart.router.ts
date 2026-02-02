@@ -23,4 +23,16 @@ router.patch(
   cartControllers.updateQuantityController,
 );
 
+router.delete(
+  "/item/:itemId",
+  auth(UserRole.CUSTOMER, UserRole.ADMIN, UserRole.PROVIDER),
+  cartControllers.deleteCartItemController,
+);
+
+router.delete(
+  "/clear",
+  auth(UserRole.CUSTOMER, UserRole.ADMIN, UserRole.PROVIDER),
+  cartControllers.clearCartController,
+);
+
 export const cartRouter = router;

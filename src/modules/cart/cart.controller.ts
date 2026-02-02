@@ -51,8 +51,48 @@ const updateQuantityController = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteCartItemController = async (req: Request, res: Response) => {
+  try {
+    const { itemId } = req.params;
+    const userId = req.user?.id; // Authenticated user ID
+
+    await cartServices.deleteFromCart(itemId as string, userId as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Item removed from cart successfully",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to delete item",
+    });
+  }
+};
+
+// 2. Clear Full Cart Controller
+export const clearCartController = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+
+    await cartServices.clearCart(userId as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Cart cleared successfully",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to clear cart",
+    });
+  }
+};
+
 export const cartControllers = {
   addMealToCart,
   getMyCart,
   updateQuantityController,
+  clearCartController,
+  deleteCartItemController,
 };

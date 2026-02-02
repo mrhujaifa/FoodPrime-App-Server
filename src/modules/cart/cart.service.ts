@@ -45,15 +45,13 @@ const getMyCart = async (userId: string) => {
 const updateCartItemQuantity = async (
   itemId: string,
   action: "increase" | "decrease",
-  userId: string, // userId parameter add kora holo
+  userId: string,
 ) => {
-  // ১. আইটেমটি খোঁজা এবং সাথে কার্ট ডাটা চেক করা (Security)
   const item = await prisma.cartItem.findUnique({
     where: { id: itemId },
     include: { cart: true },
   });
 
-  // ২. যদি আইটেম না থাকে বা আইটেমটি অন্য ইউজারের হয়
   if (!item || item.cart.customerId !== userId) {
     throw new Error("Unauthorized or Item not found");
   }
@@ -71,8 +69,37 @@ const updateCartItemQuantity = async (
   });
 };
 
+const deleteFromCart = async (itemId: string, userId: string) => {
+  const item = await prisma.cartItem.findUnique({
+    where: { id: itemId },
+    include: { cart: true },
+  });
+
+  if (!item || item.cart.customerId !== userId) {
+    throw new Error("Unauthorized or Item not found");
+  }
+
+  return await prisma.cartItem.delete({
+    where: { id: itemId },
+  });
+};
+
+const clearCart = async (userId: string) => {
+  const cart = await prisma.cart.findUnique({
+    where: { customerId: userId },
+  });
+
+  if (!cart) throw new Error("Cart not found");
+
+  return await prisma.cartItem.deleteMany({
+    where: { cartId: cart.id },
+  });
+};
+
 export const cartServices = {
   addMealToCart,
   getMyCart,
   updateCartItemQuantity,
+  clearCart,
+  deleteFromCart,
 };
