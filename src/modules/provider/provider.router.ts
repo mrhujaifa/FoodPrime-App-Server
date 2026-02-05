@@ -28,4 +28,10 @@ router.get(
   providerController.getProviderOwnMeal,
 );
 
+router.patch(
+  "/meals/:id",
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  providerController.updateOwnMeal,
+);
+
 export const providerRouter = router;

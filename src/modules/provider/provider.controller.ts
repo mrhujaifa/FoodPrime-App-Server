@@ -80,10 +80,47 @@ const getProviderOwnMeal = async (req: Request, res: Response) => {
   }
 };
 
+const updateOwnMeal = async (req: Request, res: Response) => {
+  try {
+    const providerUserId = req.user?.id; // এটি আপনার সার্ভিসের ১ম প্যারামিটার
+    const { id: mealId } = req.params; // এটি আপনার সার্ভিসের ৩য় প্যারামিটার
+    const payload = req.body; // এটি আপনার সার্ভিসের ২য় প্যারামিটার
+
+    // সার্ভিসের সিরিয়াল অনুযায়ী প্যারামিটারগুলো পাঠাতে হবে:
+    // updateOwnMeal(providerUserId, payload, mealId)
+    const result = await providerService.updateOwnMeal(
+      providerUserId as string, // ১ম প্যারামিটার
+      payload, // ২য় প্যারামিটার
+      mealId as string, // ৩য় প্যারামিটার
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Meal update successful",
+      data: result,
+    });
+  } catch (error: any) {
+    console.log("Error in Controller:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
+  }
+};
+
+const getProviderOwnOrders = async () => {
+  try {
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const providerController = {
   createProviderMeal,
   getProviderFullProfile,
   createProviderProfile,
   getProviderParterShipRequest,
   getProviderOwnMeal,
+  updateOwnMeal,
+  getProviderOwnOrders,
 };

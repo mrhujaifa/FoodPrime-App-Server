@@ -1,3 +1,4 @@
+import { Decimal } from "@prisma/client/runtime/index-browser";
 import { Prisma } from "../../../generated/prisma/client";
 import { ICreateMeal } from "../../interfaces/meal.interface";
 import { ICreateProviderProfile } from "../../interfaces/providerProfile.interface";
@@ -139,10 +140,49 @@ const getProviderOwnMeal = async (providerId: string) => {
   return profileWithMeals?.meals || [];
 };
 
+const updateOwnMeal = async (
+  providerUserId: string,
+  payload: any,
+  mealId: string,
+) => {
+  const providerProfile = await prisma.providerProfile.findUnique({
+    where: { userId: providerUserId },
+  });
+
+  if (!providerProfile) {
+    throw new Error("Provider profile not found");
+  }
+
+  const result = await prisma.meal.update({
+    where: {
+      id: mealId,
+      providerId: providerProfile.id,
+    },
+    data: {
+      name: payload.name,
+      description: payload.description,
+      price: payload.price ? new Decimal(payload.price) : undefined,
+      discountPrice: payload.discountPrice
+        ? new Decimal(payload.discountPrice)
+        : null,
+      imageUrl: payload.imageUrl,
+      isAvailable: payload.isAvailable,
+      isVeg: payload.isVeg,
+      spiciness: payload.spiciness, // Enum: NONE, MILD, MEDIUM, HOT, EXTRA_HOT
+      isBestseller: payload.isBestseller,
+      prepTime: payload.prepTime ? Number(payload.prepTime) : undefined,
+      calories: payload.calories ? Number(payload.calories) : undefined,
+      categoryId: payload.categoryId,
+    },
+  });
+  return result;
+};
+
 export const providerService = {
   createProviderMeal,
   getProviderFullProfile,
   createProviderProfile,
   getProviderParterShipRequest,
   getProviderOwnMeal,
+  updateOwnMeal,
 };
