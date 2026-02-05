@@ -22,5 +22,10 @@ router.get(
   auth(UserRole.ADMIN),
   providerController.getProviderParterShipRequest,
 );
+router.get(
+  "/own-meals",
+  auth(UserRole.ADMIN, UserRole.PROVIDER, UserRole.CUSTOMER),
+  providerController.getProviderOwnMeal,
+);
 
 export const providerRouter = router;

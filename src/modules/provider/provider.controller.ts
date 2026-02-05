@@ -62,9 +62,28 @@ const getProviderParterShipRequest = async (req: Request, res: Response) => {
   }
 };
 
+const getProviderOwnMeal = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const result = await providerService.getProviderOwnMeal(userId as string);
+
+    res.status(200).json({
+      success: true,
+      message: "Provider own data fetch successfull",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "something went worng!",
+    });
+  }
+};
+
 export const providerController = {
   createProviderMeal,
   getProviderFullProfile,
   createProviderProfile,
   getProviderParterShipRequest,
+  getProviderOwnMeal,
 };

@@ -124,9 +124,25 @@ const getProviderParterShipRequest = async () => {
   return result;
 };
 
+const getProviderOwnMeal = async (providerId: string) => {
+  const profileWithMeals = await prisma.providerProfile.findUnique({
+    where: { userId: providerId },
+    include: {
+      meals: {
+        include: {
+          category: true,
+        },
+      },
+    },
+  });
+
+  return profileWithMeals?.meals || [];
+};
+
 export const providerService = {
   createProviderMeal,
   getProviderFullProfile,
   createProviderProfile,
   getProviderParterShipRequest,
+  getProviderOwnMeal,
 };
