@@ -3,6 +3,8 @@ import { prisma } from "../../lib/prisma";
 const getAllMeals = async () => {
   const meals = await prisma.meal.findMany({
     include: {
+      // সরাসরি মিলের ক্যাটাগরি অন্তর্ভুক্ত করা হলো
+      category: true,
       provider: {
         select: {
           id: true,
@@ -12,7 +14,13 @@ const getAllMeals = async () => {
           address: true,
         },
       },
-      _count: true,
+
+      /* provider: {
+        include: {
+           meals: true 
+        }
+      }
+      */
     },
   });
   return meals;

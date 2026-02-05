@@ -1,5 +1,7 @@
 model Order {
   id               String        @id @default(uuid())
+  name String 
+  email String
   orderNumber      String        @unique
   totalPrice       Decimal       @db.Decimal(10, 2)
   deliveryAddress  String

@@ -6,6 +6,8 @@ import { auth } from "./lib/auth";
 import { providerRouter } from "./modules/provider/provider.router";
 import { mealRouter } from "./modules/meal/meal.router";
 import { cartRouter } from "./modules/cart/cart.router";
+import { orderRouter } from "./modules/order/order.router";
+import { reviewRouter } from "./modules/review/review.router";
 
 const app: Application = express();
 
@@ -30,6 +32,12 @@ app.use("/api/meals", mealRouter);
 
 // cart router
 app.use("/api/cart", cartRouter);
+
+// order router
+app.use("/api/order", orderRouter);
+
+// review router
+app.use("/api/reviews", reviewRouter);
 
 // root router response
 app.get("/", (req, res) => {
