@@ -34,4 +34,16 @@ router.patch(
   providerController.updateOwnMeal,
 );
 
+router.get(
+  "/meal-orders",
+  auth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
+  providerController.getProviderOwnOrders,
+);
+
+router.delete(
+  "/meals/:id",
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  providerController.deleteOwnMeal,
+);
+
 export const providerRouter = router;

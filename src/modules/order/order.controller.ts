@@ -23,7 +23,23 @@ const getUserOrders = async (req: Request, res: Response) => {
   }
 };
 
+const SingleOrderDetails = async (req: Request, res: Response) => {
+  try {
+    const { id: orderId } = req.params;
+    const result = await orderServices.SingleOrderDetails(orderId as string);
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "order single deatils",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const orderController = {
   createOrder,
   getUserOrders,
+  SingleOrderDetails,
 };

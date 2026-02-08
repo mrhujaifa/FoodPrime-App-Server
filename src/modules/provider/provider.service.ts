@@ -178,6 +178,81 @@ const updateOwnMeal = async (
   return result;
 };
 
+const getProviderOwnOrders = async (providerUserId: string) => {
+  const providerProfile = await prisma.providerProfile.findUnique({
+    where: { userId: providerUserId },
+  });
+
+  if (!providerProfile) {
+    throw new Error("Provider profile not found");
+  }
+
+  const orders = await prisma.order.findMany({
+    where: {
+      items: {
+        some: {
+          meal: {
+            providerId: providerProfile.id, // Meal মডেলের সাথে প্রোভাইডার যুক্ত
+          },
+        },
+      },
+    },
+    include: {
+      customer: {
+        select: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      items: {
+        where: {
+          meal: {
+            providerId: providerProfile.id, // শুধুমাত্র এই প্রোভাইডারের আইটেমগুলো দেখাবে
+          },
+        },
+        include: {
+          meal: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return orders;
+};
+
+const deleteOwnMeal = async (providerUserId: string, mealId: string) => {
+  try {
+    const providerProfile = await prisma.providerProfile.findUnique({
+      where: { userId: providerUserId },
+    });
+
+    if (!providerProfile) throw new Error("Provider profile not found");
+
+    const result = await prisma.meal.deleteMany({
+      where: {
+        id: mealId,
+        providerId: providerProfile.id,
+      },
+    });
+
+    if (result.count === 0) throw new Error("Meal not found");
+
+    return { success: true, message: "Meal deleted successfully" };
+  } catch (error: any) {
+    // প্রিজমার ফরেন কি এরর কোড P2003 চেক করা
+    if (error.code === "P2003") {
+      throw new Error(
+        "এই খাবারটি ডিলিট করা সম্ভব নয় কারণ এটি কোনো অর্ডারের সাথে যুক্ত আছে।",
+      );
+    }
+    throw error;
+  }
+};
+
 export const providerService = {
   createProviderMeal,
   getProviderFullProfile,
@@ -185,4 +260,6 @@ export const providerService = {
   getProviderParterShipRequest,
   getProviderOwnMeal,
   updateOwnMeal,
+  getProviderOwnOrders,
+  deleteOwnMeal,
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { providerService } from "./provider.service";
+import { providerService } from "./provider.service.js";
 
 const createProviderMeal = async (req: Request, res: Response) => {
   try {
@@ -108,8 +108,37 @@ const updateOwnMeal = async (req: Request, res: Response) => {
   }
 };
 
-const getProviderOwnOrders = async () => {
+const getProviderOwnOrders = async (req: Request, res: Response) => {
   try {
+    const providerUserId = req.user?.id;
+    const result = await providerService.getProviderOwnOrders(
+      providerUserId as string,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "ownorder fetch succ",
+      data: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteOwnMeal = async (req: Request, res: Response) => {
+  try {
+    const providerUserId = req.user?.id;
+    const { id: mealId } = req.params;
+    const result = await providerService.deleteOwnMeal(
+      providerUserId as string,
+      mealId as string,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "provider own meal delete successfull",
+      data: result,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -123,4 +152,5 @@ export const providerController = {
   getProviderOwnMeal,
   updateOwnMeal,
   getProviderOwnOrders,
+  deleteOwnMeal,
 };

@@ -13,16 +13,17 @@ const app: Application = express();
 
 app.use(
   cors({
-    origin: env.ORIGIN_URL,
+    origin: env.ORIGIN_URL || "http://localhost:3000",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    exposedHeaders: ["set-cookie"]
   }),
 );
 
 app.use(express.json());
 
 // auth router from better auth
-app.all("/api/auth/*splat", toNodeHandler(auth));
+app.all("/api/auth/*path", toNodeHandler(auth));
 
 //provider router
 app.use("/api/provider", providerRouter);
