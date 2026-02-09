@@ -16,7 +16,8 @@ app.use(
     origin: env.ORIGIN_URL || "http://localhost:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
-    exposedHeaders: ["set-cookie"]
+    exposedHeaders: ["set-cookie"],
+    allowedHeaders: ["Content-Type", "Authorization", "set-cookie"],
   }),
 );
 

@@ -38,8 +38,31 @@ const SingleOrderDetails = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const providerId = req.user?.id;
+    const { status: newStatus } = req.body;
+
+    const updatedOrder = await orderServices.updateOrderStatus(
+      orderId as string,
+      providerId as string,
+      newStatus,
+    );
+
+    res.status(200).json({
+      success: true,
+      data: updatedOrder,
+      message: "Order status updated successfully",
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const orderController = {
   createOrder,
   getUserOrders,
   SingleOrderDetails,
+  updateOrderStatus,
 };

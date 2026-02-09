@@ -21,4 +21,11 @@ router.get(
   auth(UserRole.PROVIDER, UserRole.ADMIN),
   orderController.SingleOrderDetails,
 );
+
+router.patch(
+  "/:orderId/status",
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
+  orderController.updateOrderStatus,
+);
+
 export const orderRouter = router;

@@ -1,3 +1,4 @@
+import { OrderStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 const placeOrderService = async (userId: string, orderData: any) => {
@@ -82,9 +83,64 @@ const SingleOrderDetails = async (orderId: string) => {
 
   return results;
 };
+const updateOrderStatus = async (
+  orderId: string,
+  userId: string, // এটা User.id
+  newStatus: string,
+) => {
+  // 1) Validate status
+  if (!Object.values(OrderStatus).includes(newStatus as OrderStatus)) {
+    throw new Error("Invalid order status");
+  }
+
+  // 2) userId -> ProviderProfile
+  const providerProfile = await prisma.providerProfile.findUnique({
+    where: { userId },
+  });
+
+  if (!providerProfile) {
+    throw new Error("Provider profile not found");
+  }
+
+  const providerProfileId = providerProfile.id;
+
+  // 3) Load order with items + meals
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+    include: {
+      items: {
+        include: { meal: true },
+      },
+    },
+  });
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  // 4) OWNERSHIP CHECK ✅
+  const hasProviderMeal = order.items.some(
+    (item) => item.meal.providerId === providerProfileId,
+  );
+
+  if (!hasProviderMeal) {
+    throw new Error(
+      "Unauthorized: You are not the owner of the meal in this order",
+    );
+  }
+
+  // 5) Update status
+  const updatedOrder = await prisma.order.update({
+    where: { id: orderId },
+    data: { status: newStatus as OrderStatus },
+  });
+
+  return updatedOrder;
+};
 
 export const orderServices = {
   placeOrderService,
   getUserOrders,
   SingleOrderDetails,
+  updateOrderStatus,
 };

@@ -8,7 +8,36 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   trustedOrigins: [env.ORIGIN_URL],
-  
+  advanced: {
+    cookiePrefix: "better-auth",
+    crossSubDomainCookies: {
+      enabled: true,
+    },
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      path: "/",
+    },
+    cookies: {
+      session_token: {
+        attributes: {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7,
+        },
+      },
+    },
+  },
+
+  baseURL: env.BETTER_AUTH_URL,
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // 1 day
+  },
+
   user: {
     additionalFields: {
       role: {
