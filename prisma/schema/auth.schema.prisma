@@ -8,7 +8,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   role          String?   @default("CUSTOMER")
   phone         String?
-  status        String?   @default("ACTIVE")
+  status        Status    @default(ACTIVE)
   address       String?
   providerName  String?
   sessions      Session[]
@@ -17,10 +17,17 @@ model User {
   providerProfile ProviderProfile?
   orders          Order[]
   rivew           Review[]
-  cart  Cart[]
+  cart            Cart[]
 
   @@unique([email])
   @@map("user")
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  BLOCKED
 }
 
 model Session {
