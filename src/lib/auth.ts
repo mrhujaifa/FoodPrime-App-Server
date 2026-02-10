@@ -8,10 +8,11 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   trustedOrigins: [env.ORIGIN_URL],
+
   advanced: {
-    cookiePrefix: "better-auth",
+    // cookiePrefix: "better-auth",
     crossSubDomainCookies: {
-      enabled: true,
+      enabled: false,
     },
     defaultCookieAttributes: {
       secure: true,
@@ -24,7 +25,7 @@ export const auth = betterAuth({
         attributes: {
           httpOnly: true,
           secure: true,
-          sameSite: "none",
+          sameSite: "lax",
           path: "/",
           maxAge: 60 * 60 * 24 * 7,
         },

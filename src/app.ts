@@ -8,6 +8,7 @@ import { mealRouter } from "./modules/meal/meal.router";
 import { cartRouter } from "./modules/cart/cart.router";
 import { orderRouter } from "./modules/order/order.router";
 import { reviewRouter } from "./modules/review/review.router";
+import { adminRouter } from "./modules/admin/admin.router";
 
 const app: Application = express();
 
@@ -40,6 +41,9 @@ app.use("/api/order", orderRouter);
 
 // review router
 app.use("/api/reviews", reviewRouter);
+
+// admin router
+app.use("/api/admin", adminRouter);
 
 // root router response
 app.get("/", (req, res) => {
