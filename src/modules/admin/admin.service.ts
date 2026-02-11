@@ -1,3 +1,4 @@
+import { Status } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 const getAllUsers = async (adminId: string) => {
@@ -39,10 +40,9 @@ const changeUserStatus = async (
     );
   }
 
-  console.log("stauts....................", status);
   const updatedUser = await prisma.user.update({
     where: { id: userId },
-    data: { status },
+    data: { status: Status[status as keyof typeof Status] }, // Ensure status is a valid enum value
   });
 
   return updatedUser;
