@@ -24,7 +24,7 @@ router.get(
 );
 router.get(
   "/own-meals",
-  auth(UserRole.ADMIN, UserRole.PROVIDER, UserRole.CUSTOMER),
+  auth(UserRole.ADMIN, UserRole.PROVIDER),
   providerController.getProviderOwnMeal,
 );
 
@@ -36,7 +36,7 @@ router.patch(
 
 router.get(
   "/meal-orders",
-  auth(UserRole.CUSTOMER, UserRole.PROVIDER, UserRole.ADMIN),
+  auth(UserRole.PROVIDER, UserRole.ADMIN),
   providerController.getProviderOwnOrders,
 );
 

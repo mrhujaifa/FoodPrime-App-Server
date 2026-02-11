@@ -13,5 +13,9 @@ router.post(
 );
 
 // GET: /api/reviews/:mealId
-router.get("/:mealId", reviewController.fetchReviews);
+router.get(
+  "/:mealId",
+  auth(UserRole.ADMIN, UserRole.CUSTOMER, UserRole.PROVIDER),
+  reviewController.fetchReviews,
+);
 export const reviewRouter = router;
