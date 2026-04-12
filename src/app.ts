@@ -17,15 +17,15 @@ app.use(
     origin: env.ORIGIN_URL || "http://localhost:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
-    exposedHeaders: ["set-cookie"],
-    allowedHeaders: ["Content-Type", "Authorization", "set-cookie"],
+    exposedHeaders: ["Set-Cookie"],
+    // allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
 app.use(express.json());
 
 // auth router from better auth
-app.all("/api/auth/*path", toNodeHandler(auth));
+app.all("/api/auth/*hello", toNodeHandler(auth));
 
 //provider router
 app.use("/api/provider", providerRouter);

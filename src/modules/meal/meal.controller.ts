@@ -4,26 +4,40 @@ import { mealService } from "./meal.service";
 const getAllMeals = async (req: Request, res: Response) => {
   try {
     const result = await mealService.getAllMeals();
-    res.status(201).json({
-      message: "All Meals fetch successfull",
+
+    res.status(200).json({
+      message: "All meals fetched successfully",
       success: true,
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.error("Error fetching all meals:", error);
+
+    res.status(500).json({
+      message: error?.message || "Failed to fetch meals",
+      success: false,
+      data: null,
+    });
   }
 };
 
 const getMealsCategories = async (req: Request, res: Response) => {
   try {
     const result = await mealService.getMealCategories();
-    res.status(201).json({
-      message: "All categories are found!",
+
+    res.status(200).json({
+      message: "All categories found successfully",
       success: true,
       data: result,
     });
   } catch (error: any) {
-    console.log(error.message);
+    console.error("Error fetching meal categories:", error);
+
+    res.status(500).json({
+      message: error?.message || "Failed to fetch meal categories",
+      success: false,
+      data: null,
+    });
   }
 };
 

@@ -42,4 +42,31 @@ export const auth = betterAuth({
     requireEmailVerification: true,
     autoSignIn: false,
   },
+
+  // Session config for cookie caching
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 minutes cache
+    },
+  },
+
+  // Advanced cookie settings - fixes cross-origin cookie issue
+  advanced: {
+    cookiePrefix: "better-auth",
+    useSecureCookies: true, // HTTPS required in production
+
+    cookies: {
+      session_token: {
+        name: "better-auth.session_token",
+        options: {
+          httpOnly: true, // Prevent JS access
+          sameSite: "none", // Allow cross-origin - CRITICAL for separate domains
+          secure: true, // HTTPS only - CRITICAL for SameSite=none
+          path: "/",
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        },
+      },
+    },
+  },
 });

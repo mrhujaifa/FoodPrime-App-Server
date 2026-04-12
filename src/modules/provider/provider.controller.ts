@@ -31,6 +31,15 @@ const getProviderFullProfile = async (req: Request, res: Response) => {
   }
 };
 
+const getAllProviderProfile = async (req: Request, res: Response) => {
+  try {
+    const result = await providerService.getAllProviderProfile();
+    res.status(200).json({ success: true, data: result });
+  } catch (e: any) {
+    res.status(400).json({ success: false, message: e.message });
+  }
+};
+
 const createProviderProfile = async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user?.id;
@@ -153,4 +162,5 @@ export const providerController = {
   updateOwnMeal,
   getProviderOwnOrders,
   deleteOwnMeal,
+  getAllProviderProfile,
 };

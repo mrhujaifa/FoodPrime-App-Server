@@ -22,6 +22,7 @@ router.get(
   auth(UserRole.ADMIN),
   providerController.getProviderParterShipRequest,
 );
+router.get("/all-providers", providerController.getAllProviderProfile);
 router.get(
   "/own-meals",
   auth(UserRole.ADMIN, UserRole.PROVIDER),

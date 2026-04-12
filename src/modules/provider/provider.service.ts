@@ -84,6 +84,12 @@ const getProviderFullProfile = async (providerId: string) => {
   return result;
 };
 
+const getAllProviderProfile = async () => {
+  const result = await prisma.providerProfile.findMany({});
+
+  return result;
+};
+
 const createProviderProfile = async (
   payload: ICreateProviderProfile,
   userId: string,
@@ -258,6 +264,7 @@ export const providerService = {
   getProviderFullProfile,
   createProviderProfile,
   getProviderParterShipRequest,
+  getAllProviderProfile,
   getProviderOwnMeal,
   updateOwnMeal,
   getProviderOwnOrders,
